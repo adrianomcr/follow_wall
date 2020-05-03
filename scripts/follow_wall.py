@@ -22,7 +22,7 @@ def callback_gt(data):
     my_str = str(data.pose.pose.position.x) + "\t"
     my_str = my_str + str(data.pose.pose.position.y) + "\t"
     my_str = my_str + str(data.pose.pose.orientation.z) + "\n"
-    
+
     FILE.write(my_str)
 
 
@@ -59,8 +59,8 @@ def callback_laser(data):
 
     phi_m = data.angle_min + k_m*data.angle_increment
 
-    print "phi_m: ", phi_m
-    print "delta_m: ", delta_m 
+    # print "phi_m: ", phi_m
+    # print "delta_m: ", delta_m 
 
     new_data = True
 
@@ -199,7 +199,7 @@ if __name__ == '__main__':
     cmd_vel_topic = "cmd_vel"
     global scan_topic #name of the laser scan topic
     scan_topic = "scan"
-    
+
 
     global new_data #falg for new laser data
     new_data = False
@@ -242,6 +242,3 @@ if __name__ == '__main__':
         follow_wall()
     except rospy.ROSInterruptException:
         pass
-
-
-
