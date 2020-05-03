@@ -1,0 +1,25 @@
+
+#Parameters to follow a wall in stage simulator
+
+#Robots velocity
+vr: 1.0
+
+#Convergence gain for the vector field
+kf: 1.0
+
+#Distance from the wall
+epsilon: 1.0
+
+#Control distance for the feedback linearization
+d: 0.2
+
+#Name of the cmd_vel topic
+cmd_vel_topic: cmd_vel
+
+#Name of the laser scan topic
+scan_topic: base_scan
+
+#Enable the saving of gt data
+log_gt_flag: True
+gt_topic: base_pose_ground_truth
+log_path_name: /home/adrianomcr/log_follow_wall_stage.txt

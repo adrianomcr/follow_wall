@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<launch>
+
+
+
+
+<node pkg = "stage_ros" name = "stageros" type = "stageros" output = "screen" args="-d $(find follow_wall)/worlds/map_1.world">
+</node>
+
+<node pkg = "follow_wall" name = "follow_wall" type = "follow_wall.py" output="screen">
+	<rosparam command="load" file="$(find follow_wall)/config/follow_wall_stage.yaml" />
+</node>
+
+<node pkg = "rviz" name = "rviz" type = "rviz" args="-d $(find follow_wall)/rviz/follow_wall_stage.rviz" output="screen">
+</node>
+
+<node pkg = "map_server" name = "map_server" type = "map_server" args="$(find follow_wall)/maps/map_1.yaml" output="screen">
+</node>
+
+<!--Static trasforms between map and world-->
+<node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 1 map odom 10" />
+
+
+
+
+
+</launch>
