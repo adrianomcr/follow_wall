@@ -60,7 +60,7 @@ def callback_laser(data):
     phi_m = data.angle_min + k_m*data.angle_increment
 
     # print "phi_m: ", phi_m
-    # print "delta_m: ", delta_m 
+    # print "delta_m: ", delta_m
 
     new_data = True
 
@@ -183,7 +183,7 @@ def follow_wall():
 
 
 
-# Funcao inicial
+# Main function
 if __name__ == '__main__':
 
 
