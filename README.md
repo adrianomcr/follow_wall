@@ -7,7 +7,11 @@ It uses an Euclidean distance based vector field, together with feedback lineari
 
 ## Requirements
 
-``sudo apt-get install ros-$DISTRO-stage-ros ros-$DISTRO-map-server``
+``sudo apt-get install ros-$ROS_DISTRO-stage-ros ros-$ROS_DISTRO-map-server``
+
+## Quick example
+
+``roslaunch follow_wall folow_wall_stage.launch``
 
 
 ## Parameters
