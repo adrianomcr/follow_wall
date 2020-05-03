@@ -9,14 +9,27 @@ It uses an Euclidean distance based vector field, together with feedback lineari
 
 ``sudo apt-get install ros-$ROS_DISTRO-stage-ros ros-$ROS_DISTRO-map-server``
 
-## Quick example
+## Instructions
+
+Clone this repository into your `catkin_ws/src` folder:
+
+``git clone https://github.com/adrianomcr/follow_wall.git``
+
+Compile and source:
+
+```
+catkin build
+source ~/catkin_ws/devel/setup.bash
+```
+
+For a quick example, run:
 
 ``roslaunch follow_wall folow_wall_stage.launch``
 
 
 ## Parameters
 
-The list of parameters are on the file inside the config folder. They are:
+The list of parameters are on the file inside the `config folder. They are:
 
 
 - `vr`: (`float`)
