@@ -39,15 +39,7 @@ def callback_laser(data):
     global delta_m, phi_m, new_data
 
     laserVec = data.ranges
-    # angle_min: -2.35837626457
-    # angle_max: 2.35837626457
-    # angle_increment: 0.0175343956798
 
-
-
-    # br = tf.TransformBroadcaster()
-    # br.sendTransform((x_n, y_n, 0), quaternion_from_euler(0, 0, theta_n), rospy.Time.now(), "/robot_0/base_laser_link",
-    #                  "world")
 
     delta_m = 1000000
     k_m = -1
@@ -59,10 +51,10 @@ def callback_laser(data):
 
     phi_m = data.angle_min + k_m*data.angle_increment
 
-    # print "phi_m: ", phi_m
-    # print "delta_m: ", delta_m
-
     new_data = True
+
+    print "phi_m: ", phi_m
+    print ""
 
 
     return
@@ -170,7 +162,8 @@ def follow_wall():
 
         rate.sleep()
 
-    FILE.close()
+    if(log_gt_flag):
+        FILE.close()
 
 # ---------- !! ---------- !! ---------- !! ---------- !! ----------
 
