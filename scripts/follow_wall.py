@@ -15,7 +15,7 @@ import tf
 
 
 
-# Callback to get the laser data
+# Callback to get the ground truth (if simulator stage is used)
 def callback_gt(data):
     global FILE
 
@@ -23,8 +23,8 @@ def callback_gt(data):
     my_str = my_str + str(data.pose.pose.position.y) + "\t"
     my_str = my_str + str(data.pose.pose.orientation.z) + "\n"
 
+    #Write to file
     FILE.write(my_str)
-
 
     return
 # ----------  ----------  ----------  ----------  ----------
@@ -40,7 +40,7 @@ def callback_laser(data):
 
     laserVec = data.ranges
 
-
+    #Compute the minimum distance and get the direction of the correspondent point
     delta_m = 1000000
     k_m = -1
     for k in range(len(laserVec)):
@@ -48,14 +48,10 @@ def callback_laser(data):
             delta_m = laserVec[k]
             k_m = k
 
-
+    #Compute the associated direction in the body frame
     phi_m = data.angle_min + k_m*data.angle_increment
 
     new_data = True
-
-    print "phi_m: ", phi_m
-    print ""
-
 
     return
 # ----------  ----------  ----------  ----------  ----------
@@ -69,8 +65,6 @@ def callback_laser(data):
 
 # Function to compute the control law
 def compute_command():
-
-    #global vr, kf, epsilon, d
 
     G = (2/pi)*atan(kf*(delta_m-epsilon))
     H = sqrt(1-G*G)
@@ -106,8 +100,9 @@ def follow_wall():
 
     vel = Twist()
 
+    #Define a marker to indicate the closest point
     close_point_marker = Marker()
-    close_point_marker.header.frame_id = "base_laser_link"
+    close_point_marker.header.frame_id = laser_frame_id
     close_point_marker.header.stamp = rospy.Time.now()
     close_point_marker.id = 0
     close_point_marker.type = close_point_marker.SPHERE
@@ -124,10 +119,6 @@ def follow_wall():
     close_point_marker.pose.position.y = 0.0
     close_point_marker.pose.position.z = d
 
-
-
-
-
     freq = 10.0  # Hz
     rate = rospy.Rate(freq)
 
@@ -141,24 +132,21 @@ def follow_wall():
         if(new_data):
             (v, omega) = compute_command()
             i = 0
+            #Update the marker that indicates the closest point
             close_point_marker.pose.position.x = delta_m*cos(phi_m)
             close_point_marker.pose.position.y = delta_m*sin(phi_m)
             close_point_marker.pose.position.z = d
             pub_close_point.publish(close_point_marker)
         elif(i > freq):
+            #Stop the robot is laser is out for one second
             v = 0.0
             omega = 0.0
 
         vel.linear.x = v
         vel.angular.z = omega
 
+        #Publish velocity command
         pub_stage.publish(vel)
-
-        #br = tf.TransformBroadcaster()
-        #br.sendTransform((0, 0, 0), (0, 0, 0, 1), rospy.Time.now(), "/map", "world")
-
-
-
 
         rate.sleep()
 
@@ -192,9 +180,11 @@ if __name__ == '__main__':
     cmd_vel_topic = "cmd_vel"
     global scan_topic #name of the laser scan topic
     scan_topic = "scan"
+    global laser_frame_id #name of the laser frame
+    laser_frame_id = "base_laser_link"
 
-
-    global new_data #falg for new laser data
+    #Falg for new laser data
+    global new_data
     new_data = False
 
     #Measurements from the laser
@@ -209,25 +199,26 @@ if __name__ == '__main__':
         d = float(rospy.get_param("/follow_wall/d"))
         odom_topic = rospy.get_param("/follow_wall/cmd_vel_topic")
         scan_topic = rospy.get_param("/follow_wall/scan_topic")
+        laser_frame_id = rospy.get_param("/follow_wall/laser_frame_id")
         log_gt_flag = bool(rospy.get_param("/follow_wall/log_gt_flag"))
         if(log_gt_flag):
             gt_topic = rospy.get_param("/follow_wall/gt_topic")
             log_path_name = rospy.get_param("/follow_wall/log_path_name")
         print "\n\33[92mParameters loaded\33[0m"
-        print "\33[92mvr: ", vr,"\33[0m"
-        print "\33[92mkf: ", kf,"\33[0m"
-        print "\33[92mepsilon: ", epsilon,"\33[0m"
-        print "\33[92md: ", d,"\33[0m"
-        print "\33[92mcmd_vel_topic: ", cmd_vel_topic,"\33[0m"
-        print "\33[92mscan_topic: ", scan_topic,"\33[0m"
-        print "\33[92mlog_gt_flag: ", log_gt_flag,"\33[0m"
+        print "\33[94mvr: ", vr,"\33[0m"
+        print "\33[94mkf: ", kf,"\33[0m"
+        print "\33[94mepsilon: ", epsilon,"\33[0m"
+        print "\33[94md: ", d,"\33[0m"
+        print "\33[94mcmd_vel_topic: ", cmd_vel_topic,"\33[0m"
+        print "\33[94mscan_topic: ", scan_topic,"\33[0m"
+        print "\33[94mlaser_frame_id: ", laser_frame_id,"\33[0m"
+        print "\33[94mlog_gt_flag: ", log_gt_flag,"\33[0m"
         if(log_gt_flag):
-            print "\33[92mgt_topic: ", gt_topic,"\33[0m"
-            print "\33[92log_path_namec: ", log_path_name,"\33[0m"
+            print "\33[94mgt_topic: ", gt_topic,"\33[0m"
+            print "\33[94mlog_path_namec: ", log_path_name,"\33[0m"
     except:
         print "\33[41mProblem occurred when trying to read the parameters!\33[0m"
         print "\33[41mNode follow_wall.py\33[0m"
-
 
 
 

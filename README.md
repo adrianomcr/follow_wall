@@ -7,66 +7,55 @@ It uses an Euclidean distance based vector field, together with feedback lineari
 
 ## Requirements
 
-``sudo apt-get install ros-$ROS_DISTRO-stage-ros ros-$ROS_DISTRO-map-server``
+```bash
+$ sudo apt-get install ros-$ROS_DISTRO-stage-ros ros-$ROS_DISTRO-map-server
+```
 
 ## Instructions
 
 Clone this repository into your `catkin_ws/src` folder:
 
-``git clone https://github.com/adrianomcr/follow_wall.git``
+```bash
+$ git clone https://github.com/adrianomcr/follow_wall.git
+```
 
 Compile and source:
 
-```
-catkin build
-source ~/catkin_ws/devel/setup.bash
+```bash
+$ catkin build
+$ source ~/catkin_ws/devel/setup.bash
 ```
 
 For a quick example, run:
 
-``roslaunch follow_wall folow_wall_stage.launch``
+```bash
+$ roslaunch follow_wall folow_wall_stage.launch
+```
 
 
 ## Parameters
 
-The list of parameters are on the file inside the `config folder. They are:
+The list of parameters are on the file inside the `config` folder. They are:
 
+- `vr` (`float`): Robot's velocity
 
-- `vr`: (`float`)
+- `kf` (`float`): Convergence gain for the vector field
 
-        Robot's velocity
+- `epsilon` (`float`): Distance from the wall
 
-- `kf`: (`float`)
+- `d` (`float`): Control distance for the feedback linearization
 
-        Convergence gain for the vector field
+- `cmd_vel_topic` (`string`): Name of the cmd_vel topic
 
-- `epsilon`: (`float`)
+- `scan_topic` (`string`): Name of the laser scan topic
 
-        Distance from the wall
+- `log_path_name` (`string`): Name of the laser frame
 
-- `d`: (`float`)
+- `log_gt_flag` (`bool`): Enable the saving of gt data
 
-        Control distance for the feedback linearization
+- `gt_topic` (`string`): Name of the Odometry topic with ground truth (only if log_gt_flag = True)
 
-- `cmd_vel_topic`: (`string`)
-
-        Name of the cmd_vel topic
-
-- `scan_topic`: (`string`)
-
-        Name of the laser scan topic
-
-- `log_gt_flag`: (`bool`)
-
-        Enable the saving of gt data
-
-- `gt_topic`: (`string`)
-
-        name of the Odometry topic with ground truth (only if log_gt_flag = True)
-
-- `log_path_name`: (`string`)
-
-        Path and name to save the ground truth log file (only if `log_gt_flag = True`)
+- `log_path_name` (`string`): Path and name to save the ground truth log file (only if `log_gt_flag = True`)
 
 
 ## Contact

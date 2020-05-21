@@ -19,6 +19,9 @@ cmd_vel_topic: cmd_vel
 #Name of the laser scan topic
 scan_topic: base_scan
 
+#Name of the laser frame, used for rvis Marker only
+laser_frame_id: base_laser_link
+
 #Enable the saving of gt data
 log_gt_flag: True
 gt_topic: base_pose_ground_truth
