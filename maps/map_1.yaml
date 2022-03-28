@@ -1,4 +1,4 @@
-image: map_1.png
+image: ../worlds/map_1.png
 resolution: 0.1
 origin: [-30.0, -30.0, 0.0]
 occupied_thresh: 0.65

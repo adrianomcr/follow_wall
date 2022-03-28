@@ -137,8 +137,9 @@ def follow_wall():
             close_point_marker.pose.position.y = delta_m*sin(phi_m)
             close_point_marker.pose.position.z = d
             pub_close_point.publish(close_point_marker)
+            new_data = False
         elif(i > freq):
-            #Stop the robot is laser is out for one second
+            #Stop the robot if laser is out for one second
             v = 0.0
             omega = 0.0
 
@@ -149,6 +150,7 @@ def follow_wall():
         pub_stage.publish(vel)
 
         rate.sleep()
+
 
     if(log_gt_flag):
         FILE.close()
@@ -197,7 +199,7 @@ if __name__ == '__main__':
         kf = float(rospy.get_param("/follow_wall/kf"))
         epsilon = float(rospy.get_param("/follow_wall/epsilon"))
         d = float(rospy.get_param("/follow_wall/d"))
-        odom_topic = rospy.get_param("/follow_wall/cmd_vel_topic")
+        cmd_vel_topic = rospy.get_param("/follow_wall/cmd_vel_topic")
         scan_topic = rospy.get_param("/follow_wall/scan_topic")
         laser_frame_id = rospy.get_param("/follow_wall/laser_frame_id")
         log_gt_flag = bool(rospy.get_param("/follow_wall/log_gt_flag"))
